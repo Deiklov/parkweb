@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="content forms">
+        <div class="row">
+            <div class="col-4"><img src="{% static "images/avatar.webp" %}" class="rounded m-2" width="60"
+                                    height="60"/>
+            </div>
+            <div class="col-6">
+                {% for question in questions %}
+                    <span><a href="#">{{ question.title }}</a></span>
+                    <span> rating={{ question.rating }}</span>
+                    <span>data={{ question.data_create }}</span>
+                    <p>{{ question.content }}</p>
+                    <a href="#">answer(3)</a><span>Tags: </span><a href="#">{{ question.tag.tag_word }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% for answer in answers %}
+        <div class="row">
+            <div class="col-4">
+                <img src="{% static "images/avatar.webp" %}" class="rounded m-2" width="60" height="60"/>
+            </div>
+            <div class="col-6">
+                <p>It is ANSWER&nbsp;{{ answer.content }}</p>
+                <span>{{ answer.author }}&nbsp;</span><span>{{ answer.rating }}</span>
+                <label for="correct_answ">Corrrect!</label>
+                <input type="checkbox" id="correct_answ">
+            </div>
+        </div>
+
+    {% endfor %}
+{% endblock %}

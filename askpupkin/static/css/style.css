@@ -1,7 +1,7 @@
-* {
-  margin: 0;
-  padding: 0;
-}
+/** {*/
+/*  margin: 0;*/
+/*  padding: 0;*/
+/*}*/
 .main-block {
   display: flex;
   flex-direction: column;
@@ -21,9 +21,6 @@ header {
 }
 p {
   font-size: 16px;
-}
-.main-text {
-  font-size: 22px;
 }
 .forms {
   width: 100%;
