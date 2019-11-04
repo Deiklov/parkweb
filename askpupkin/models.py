@@ -24,10 +24,10 @@ class Tag(models.Model):
 
 class QuestionManager(models.Manager):
     def best_questions(self):
-        return self.order_by('-rating')[:10]
+        return self.order_by('-rating')
 
     def newest_questions(self):
-        return self.order_by('-data_create')[:10]
+        return self.order_by('-data_create')
 
 
 class Question(models.Model):

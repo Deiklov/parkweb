@@ -70,16 +70,23 @@
             </div>
         </section>
     </div>
-
-    <nav aria-label="Page navigation example">
-        <ul class="pagination ml-5">
-            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-        </ul>
-    </nav>
+    {% block pagin %}
+        <div class="row ml-2">
+            {% if page.has_previous %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ page.previous_page_number }}">&laquo;</a>
+            {% endif %}
+            {% for num in paginator.page_range %}
+                {% if page.number == num %}
+                    <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% elif num > page.number|add:'-3' and num < page.number|add:'3' %}
+                    <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page.has_next %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ page.next_page_number }}">&raquo;</a>
+            {% endif %}
+        </div>
+    {% endblock %}
     <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
         <div class="container text-center">
             <small>Copyright &copy; Your Website</small>

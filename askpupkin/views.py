@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from .models import *
 import re
+from django.http import Http404
 
 
 def question_list(request, tag=None):
@@ -12,9 +13,12 @@ def question_list(request, tag=None):
         question_list = Question.objects.filter(tag__tag_word=tag)
     else:
         question_list = Question.objects.newest_questions()
-    question_list, paginator, page = paginate(question_list, request)
+    page = paginate(question_list, request)
+    paginator = page.paginator
     tags = Tag.objects.all()
-    return render(request, 'index.html', {'questions': question_list, 'tags': tags, 'page': page})
+    context = {'questions': page.object_list, 'tags': tags,
+               'page': page, 'paginator': paginator}
+    return render(request, 'index.html', context=context)
 
 
 def question(request, number):
@@ -42,7 +46,19 @@ def signup(request):
 
 
 def paginate(object_list, request):
-    paginator = Paginator(object_list, 5)
-    page = request.GET.get('page', 1)
-    item = paginator.page(page)
-    return item.object_list, paginator, page
+    try:
+        limit = int(request.GET.get('limit', 5))
+    except ValueError:
+        limit = 5
+    if limit > 100:
+        limit = 5
+    try:
+        page = int(request.GET.get('page', 1))
+    except ValueError:
+        raise Http404
+    paginator = Paginator(object_list, limit)
+    try:
+        page = paginator.page(page)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
+    return page
