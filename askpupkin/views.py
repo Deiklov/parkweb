@@ -1,21 +1,20 @@
 from django.shortcuts import render
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from .models import *
+import re
 
 
-def question_list(request):
-    # questions = []
-    # for i in range(1, 30):
-    #     questions.append({
-    #         'title': 'title' + str(i),
-    #         'id': i,
-    #         'text': 'text ' + str(i) + ' Lorem ipsum dolor sit amet, consectetur'
-    #     })
-    # paginator = Paginator(questions, 5)
-    # page_number = request.GET.get('page', 1)
-    # page = paginator.get_page(page_number)
-    question_list = Question.objects.newest_questions()
-    return render(request, 'index.html', {'questions': question_list})
+def question_list(request, tag=None):
+    path = request.path
+    if path == '/hot':
+        question_list = Question.objects.best_questions()
+    elif re.match(r'^/tag/.+$', path):  # tag select
+        question_list = Question.objects.filter(tag__tag_word=tag)
+    else:
+        question_list = Question.objects.newest_questions()
+    question_list, paginator, page = paginate(question_list, request)
+    tags = Tag.objects.all()
+    return render(request, 'index.html', {'questions': question_list, 'tags': tags, 'page': page})
 
 
 def question(request, number):
@@ -25,4 +24,25 @@ def question(request, number):
 
 
 def ask(request):
-    return render(request, 'ask.html', {})
+    tags = Tag.objects.all()
+    context = {'tags': tags}
+    return render(request, 'ask.html', context=context)
+
+
+def login(request):
+    tags = Tag.objects.all()
+    context = {'tags': tags}
+    return render(request, 'login.html', context=context)
+
+
+def signup(request):
+    tags = Tag.objects.all()
+    context = {'tags': tags}
+    return render(request, 'signup.html', context=context)
+
+
+def paginate(object_list, request):
+    paginator = Paginator(object_list, 5)
+    page = request.GET.get('page', 1)
+    item = paginator.page(page)
+    return item.object_list, paginator, page

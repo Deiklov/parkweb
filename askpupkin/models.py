@@ -24,10 +24,10 @@ class Tag(models.Model):
 
 class QuestionManager(models.Manager):
     def best_questions(self):
-        return self.filter(rating__gt=10)
+        return self.order_by('-rating')[:10]
 
     def newest_questions(self):
-        return self.filter(data_create__gt=datetime.date(2019, 10, 31))
+        return self.order_by('-data_create')[:10]
 
 
 class Question(models.Model):
@@ -41,6 +41,10 @@ class Question(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def answer_count(self):
+        return self.answer_set.count()
 
 
 class Answer(models.Model):

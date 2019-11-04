@@ -51,12 +51,14 @@
                 {% endblock %}
             </div>
             <div class="right-content col-3">
-                <div class="content tags">
-                    <h2>Popular Tags</h2>
-                    <p>perl python TechnoPark</p>
-                    <p>MySQL Django</p>
-                    <p>Mail.ru Voloshin Firefox</p>
-                </div>
+                {% block tag %}
+                    <div class="content tags">
+                        <h2>Popular Tags</h2>
+                        {% for tag in tags %}
+                            <a href="{% url "tag" tag.tag_word %}"><span>{{ tag.tag_word }}</span></a>
+                        {% endfor %}
+                    </div>
+                {% endblock tag %}
                 <div class="content memberes d-flex flex-column">
                     <h2>Best Memberes</h2>
                     <a href="#">Mr. Freeman</a>
@@ -69,21 +71,15 @@
         </section>
     </div>
 
-    <section>
-        <div class="content pagination m-3">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active">
-                    <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </div>
-    </section>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination ml-5">
+            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+        </ul>
+    </nav>
     <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
         <div class="container text-center">
             <small>Copyright &copy; Your Website</small>
