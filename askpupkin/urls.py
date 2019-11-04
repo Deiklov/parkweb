@@ -10,5 +10,5 @@ urlpatterns = [
     path('question/<int:number>', views.question, name="question"),
     path('hot', views.question_list, name="hot"),
     path('tag/<str:tag>', views.question_list, name="tag"),
-    path('cabinet', TemplateView.as_view(template_name="cabinet.html"))
+    path('cabinet', TemplateView.as_view(template_name="cabinet.html"), name="settings")
 ]

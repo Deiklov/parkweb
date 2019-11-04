@@ -25,13 +25,13 @@
                 </form>
             </div>
             <div class="content d-flex flex-row align-content-center col-3">
-                <a href="#"><img src="{% static "images/avatar.webp" %}" class="rounded m-2"
+                <a href="{% url "settings" %}"><img src="{% static "images/avatar.webp" %}" class="rounded m-2"
                                  alt="Cinque Terre" width="60" height="60"/></a>
                 <div class="content-user d-flex flex-column align-content-center">
                     <span class="name m-2">Dr.Papper</span>
                     <ul class="navbar-nav d-flex flex-row">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Setting</a>
+                            <a class="nav-link" href="{% url "settings" %}">Setting</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Log out</a>
