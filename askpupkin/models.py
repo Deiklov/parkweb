@@ -7,7 +7,6 @@ from django.utils import timezone
 
 class Profile(models.Model):
     avatar = models.ImageField(blank=True, null=True, upload_to="images/")
-    reg_data = models.DateField()
     rating = models.IntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -34,9 +33,9 @@ class Question(models.Model):
     title = models.CharField(max_length=255)
     data_create = models.DateField(auto_now_add=True)
     content = models.TextField()
-    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     rating = models.IntegerField(default=0)
-    tag = models.ManyToManyField(Tag)
+    tag = models.ManyToManyField(Tag, blank=True)
     objects = QuestionManager()
 
     def __str__(self):
@@ -49,8 +48,8 @@ class Question(models.Model):
 
 class Answer(models.Model):
     content = models.TextField()
-    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True)
-    data_create = models.DateField()
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    data_create = models.DateField(auto_now_add=True)
     rating = models.IntegerField(default=0)
     is_true = models.BooleanField(default=False)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, blank=True, null=True)
