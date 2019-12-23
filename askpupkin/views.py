@@ -42,8 +42,7 @@ def login(request):
 
 def signup(request):
     tags = Tag.objects.all()
-    form = RegisterForm()
-    context = {'tags': tags, 'form': form}
+    context = {'tags': tags}
     return render(request, 'signup.html', context=context)
 
 

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-import datetime
+from django.utils import timezone
 
 
 class Profile(models.Model):
@@ -32,7 +32,7 @@ class QuestionManager(models.Manager):
 
 class Question(models.Model):
     title = models.CharField(max_length=255)
-    data_create = models.DateField(default=datetime.date.today())
+    data_create = models.DateField(auto_now_add=True)
     content = models.TextField()
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True)
     rating = models.IntegerField(default=0)

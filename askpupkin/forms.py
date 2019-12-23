@@ -7,7 +7,3 @@ class LoginForm(forms.Form):
     password = forms.CharField(max_length=50, widget=forms.PasswordInput(attrs={'class': "form-control"}))
 
 
-class RegisterForm(forms.ModelForm):
-    class Meta:
-        model = Profile, User
-        exclude = ("user",)
