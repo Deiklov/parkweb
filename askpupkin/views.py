@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from .models import *
 import re
+from .forms import *
 from django.http import Http404
 
 
@@ -34,14 +35,15 @@ def ask(request):
 
 
 def login(request):
-    tags = Tag.objects.all()
-    context = {'tags': tags}
+    form = LoginForm()
+    context = {'form': form}
     return render(request, 'login.html', context=context)
 
 
 def signup(request):
     tags = Tag.objects.all()
-    context = {'tags': tags}
+    form = RegisterForm()
+    context = {'tags': tags, 'form': form}
     return render(request, 'signup.html', context=context)
 
 
