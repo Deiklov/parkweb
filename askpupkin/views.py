@@ -3,10 +3,13 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from .models import *
 from django.shortcuts import redirect
 from django.contrib.auth.forms import *
+from django.contrib.auth.decorators import *
 from django.contrib.auth import *
 import re
 from .forms import *
 from django.http import Http404
+from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 
 
 def question_list(request, tag=None):
@@ -40,6 +43,7 @@ def question(request, number):
     return render(request, 'question.html', {'answers': answers, 'questions': question, 'form': answerform})
 
 
+@login_required(login_url="/login")
 def ask(request):
     tags = Tag.objects.all()
     questionform = QuestionForm()
@@ -49,6 +53,7 @@ def ask(request):
             question = form.save(commit=False)
             question.author = request.user
             question.save()
+            return redirect("question/%s" % question.id)
     context = {'tags': tags, 'form': questionform}
     return render(request, 'ask.html', context=context)
 
@@ -67,35 +72,39 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-        if 'next' in request.POST:
-            return redirect(request.POST.get('next'))
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+            else:
+                return redirect("/")
         else:
-            return redirect("/")
+            messages.error(request, "Incorrect user data")
     form = LoginForm()
     context = {'form': form}
     return render(request, 'login.html', context=context)
 
 
+@login_required(login_url="/login")
 def cabinet(request):
     if request.method == "POST":
         form = ExtnedsUserChangeForm(request.POST, instance=request.user)
-        form_profile = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        form_profile = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         if form.is_valid() and form_profile.is_valid():
             form.save()
             form_profile.save()
-            redirect("/profile/edit")
+            return redirect("/profile/edit")
     user_form = ExtnedsUserChangeForm(instance=request.user)
-    profile_form = ProfileForm(instance=request.user.profile)
+    profile_form = ProfileUpdateForm(instance=request.user.profile)
     return render(request, 'cabinet.html', {'user_form': user_form, 'profile_form': profile_form})
 
 
+@user_passes_test(lambda u: u.is_anonymous, login_url="/")
 def signup(request):
     tags = Tag.objects.all()
-    profileform = ProfileForm()
+    profileform = ProfileUpdateForm()
     userform = ExtendsUserCreationForm()
     if request.method == "POST":
         user_form = ExtendsUserCreationForm(request.POST)
-        profile_form = ProfileForm(request.POST, request.FILES)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             profile = profile_form.save(commit=False)

@@ -3,8 +3,9 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <p class="h3 mb-4">{{ user.username }}</p>
+    <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }}" width=100 height=100>
     <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+        {% csrf_token %}
         {{ user_form|crispy }}
         {{ profile_form|crispy }}
         <button class="btn btn-primary" type="submit">Change user</button>

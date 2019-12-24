@@ -25,27 +25,15 @@
                 </form>
             </div>
             {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}">Log out</a>
-                <strong>Hello <a href="{% url 'cabinet' %}"> {{ user.username }}</a></strong>
+                <a href="{% url 'logout' %}?next={{ request.path }}" class="mx-1">Log out</a>
+                <strong class="alert alert-success">Hello <a
+                        href="{% url 'cabinet' %}"> {{ user.username }}</a></strong>
+                <a href="{% url "cabinet" %}"><img src="{{ user.profile.avatar.url }}" class="rounded m-2"
+                                                   alt="Avatar" width="60" height="60"/></a>
             {% else %}
-                <a href="{% url "signup" %}">Sign up</a>
-                <a href="{% url "login" %}">Log in</a>
+                <a href="{% url "signup" %}" class="mx-1 btn btn-secondary">Sign up</a>
+                <a href="{% url "login" %}?next={{ request.path }}" class="btn btn-primary">Log in</a>
             {% endif %}
-            {#            <div class="content d-flex flex-row align-content-center col-3">#}
-            {#                <a href="{% url "settings" %}"><img src="{% static "images/avatar.webp" %}" class="rounded m-2"#}
-            {#                                                    alt="Cinque Terre" width="60" height="60"/></a>#}
-            {#                <div class="content-user d-flex flex-column align-content-center">#}
-            {#                    <span class="name m-2">Dr.Papper</span>#}
-            {#                    <ul class="navbar-nav d-flex flex-row">#}
-            {#                        <li class="nav-item">#}
-            {#                            <a class="nav-link" href="{% url "settings" %}">Setting</a>#}
-            {#                        </li>#}
-            {#                        <li class="nav-item">#}
-            {#                            <a class="nav-link" href="{% url 'logout' %}?next={{ request.path }}">Log out</a>#}
-            {#                        </li>#}
-            {#                    </ul>#}
-            {#                </div>#}
-            {#            </div>#}
         </nav>
     </header>
     <hr/>

@@ -25,20 +25,18 @@ class ExtendsUserCreationForm(UserCreationForm):
         return user
 
 
-class ExtnedsUserChangeForm(UserChangeForm):
+class ExtnedsUserChangeForm(forms.ModelForm):
+    email = forms.EmailField()
+
     class Meta:
         model = User
         fields = ('username', 'email')
 
 
-class ProfileForm(forms.ModelForm):
+class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['avatar']
-
-    def __init__(self, *args, **kwargs):
-        super(ProfileForm, self).__init__(*args, **kwargs)
-        # self.fields['user'].widget = forms.HiddenInput()
 
 
 class QuestionForm(forms.ModelForm):

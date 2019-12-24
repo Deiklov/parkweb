@@ -6,7 +6,7 @@ from django.utils import timezone
 
 
 class Profile(models.Model):
-    avatar = models.ImageField(blank=True, null=True, upload_to="images/")
+    avatar = models.ImageField(default="default.png", upload_to="images/")
     rating = models.IntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 

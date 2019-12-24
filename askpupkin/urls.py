@@ -11,6 +11,5 @@ urlpatterns = [
     path('question/<int:number>', views.question, name="question"),
     path('hot', views.question_list, name="hot"),
     path('tag/<str:tag>', views.question_list, name="tag"),
-    path('cabinet', views.cabinet, name="settings"),
     path('profile/edit', views.cabinet, name="cabinet")
 ]
